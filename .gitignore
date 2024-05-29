@@ -1,0 +1,4 @@
+*.cert
+*.pem
+*.csr
+req.conf
