@@ -1,0 +1,16 @@
+---
+apiVersion: networking.gke.io/v1
+kind: HealthCheckPolicy
+metadata:
+  name: grpc-hc
+  namespace: grpc
+spec:
+  default:
+    config:
+      type: HTTP2
+      http2HealthCheck:
+        requestPath: /healthz
+  targetRef:
+    group: ""
+    kind: Service
+    name: grpc-test

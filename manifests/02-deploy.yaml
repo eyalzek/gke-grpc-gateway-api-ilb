@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc-test
+  namespace: grpc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grpc-test
+  template:
+    metadata:
+      labels:
+        app: grpc-test
+    spec:
+      containers:
+        - image: gamussa/reactive-quote-service:0.0.3
+          name: grpc-test
+          ports:
+            - containerPort: 9001
+          env:
+            - name: GRPC_SERVER_PORT
+              value: "9001"
+        - name: envoy
+          image: envoyproxy/envoy:v1.30-latest
+          ports:
+            - containerPort: 8443
+          volumeMounts:
+            - name: envoy-config
+              mountPath: /etc/envoy/envoy.yaml
+              subPath: envoy.yaml
+            - name: grpc-envoy-tls
+              mountPath: /etc/certs
+      volumes:
+        - name: envoy-config
+          configMap:
+            name: envoy-config
+        - name: grpc-envoy-tls
+          secret:
+            secretName: grpc-envoy-tls
