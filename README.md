@@ -41,7 +41,7 @@ configured for your project and `kubectl` with credentials to your cluster.
 
 - Create K8S Secret with the self-signed cert
   ```shell
-  $ kubectl create secret tls grpc-envoy-tls \
+  $ kubectl -n grpc create secret tls grpc-envoy-tls \
   --cert=cert.pem \
   --key=key.pem
   ```
